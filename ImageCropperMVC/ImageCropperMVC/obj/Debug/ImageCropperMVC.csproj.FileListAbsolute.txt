@@ -1,0 +1,7 @@
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\bin\ImageCropperMVC.dll
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\bin\ImageCropperMVC.pdb
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\bin\EntityFramework.dll
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\bin\EntityFramework.xml
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\obj\Debug\ResolveAssemblyReference.cache
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\obj\Debug\ImageCropperMVC.dll
+C:\My Projects\ImageCropperMVC\ImageCropperMVC\ImageCropperMVC\obj\Debug\ImageCropperMVC.pdb
