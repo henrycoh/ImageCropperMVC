@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "_ImageCrop";
+}
+<div style="width:750px;height:500px;padding:5px;">
+    <img id="jcrop_target" src="@Url.RouteUrl("Default", new { @Controller = "Home", @Action = "RenderOriginalImage", @width = 500, @height = 300, @fileName = (string)ViewBag.FileName }) %>" />
+    <div style="margin-left:5px;position:absolute;top:5px;right:10px;border:solid 1px silver;padding:5px;">
+        <div style="margin-bottom:10px;font-weight:bold;">Preview</div>
+        <div style="width:186px;height:82px;overflow:hidden;">
+            <img id="preview" src="@Url.RouteUrl("Default", new { @Controller = "Home", @Action = "RenderOriginalImage", @width = 500, @height = 300, @fileName = (string)ViewBag.FileName }) %>" />
+        </div>
+    </div>
+    <div>
+        @Html.Hidden("file_name", (string)ViewBag.FileName)
+        @Html.Hidden("img_width", 500)
+        @Html.Hidden("img_height", 300)
+        @Html.Hidden("x1")
+        @Html.Hidden("y1")
+        @Html.Hidden("x2")
+        @Html.Hidden("y2")
+        @Html.Hidden("w")
+        @Html.Hidden("h")
+        <button id="crop_submit">Crop</button>
+        <button class="nyroModalClose">Close</button>
+    </div>
+</div>

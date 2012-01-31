@@ -1,8 +1,114 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
+@section styles{
+    <link href="@Url.Content("~/Content/2011.3.1129/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/2011.3.1129/kendo.metro.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/nyroModal/styles/nyroModal.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jCrop/css/jquery.Jcrop.css")" rel="stylesheet" type="text/css" />
+}
 <h2>@ViewBag.Message</h2>
 <p>
-    
+    <div style="width:60%;">
+        <input name="files" id="files" type="file" />
+    </div>
 </p>
+@section scripts{
+    <script src="@Url.Content("~/Scripts/2011.3.1129/kendo.all.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Jcrop/jquery.Jcrop.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/nyroModal/jquery.nyroModal.custom.js")" type="text/javascript"></script>
+    <!--[if IE 6]>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/nyroModal/jquery.nyroModal-ie6.js")"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function getFileInfo(e) {
+            return $.map(e.files, function(file) {
+                var info = file.name;
+                
+                return info;
+            }).join(", ");
+        }
+        function onUpload(e) {
+            var files = e.files;
+
+            // Check the extension of each file and abort the upload if it is not .jpg, .jpeg, .gif, or png
+            $.each(files, function() {
+                if (this.extension != ".jpg" && this.extension != ".jpeg" && this.extension != ".gif" && this.extension != ".png") {
+                    alert("Only image files can be uploaded");
+                    e.preventDefault();
+                }
+            });
+        }
+        function onSuccess(e) {
+            $.get("/Home/_ImageCrop/?fileName=" + getFileInfo(e), function(content) {
+                $.nmData(content, {
+                    closeOnEscape: false,
+                    closeOnClick: false,
+                    showCloseButton: false,
+                    callbacks: {
+                        afterShowCont: function() {                            
+                            $('#jcrop_target').Jcrop({
+		                        onChange: showPreview,
+		                        onSelect: showPreview,
+		                        setSelect: [20,20,392,183],
+                                addClass: 'jcrop-dark',
+                                aspectRatio: 2.29,
+                                allowSelect: false
+	                        });
+                        }
+                    }
+                });
+            });
+        }
+        function showPreview(coords) {
+            $('#x1').val(coords.x);
+	        $('#y1').val(coords.y);
+	        $('#x2').val(coords.x2);
+	        $('#y2').val(coords.y2);
+	        $('#w').val(coords.w);
+	        $('#h').val(coords.h);
+
+	        var rx = 186 / coords.w;
+	        var ry = 82 / coords.h;
+
+	        $('#preview').css({
+		        width: Math.round(rx * 500) + 'px',
+		        height: Math.round(ry * 300) + 'px',
+		        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+		        marginTop: '-' + Math.round(ry * coords.y) + 'px'
+	        });
+        }
+        $(function() {
+            $("#files").kendoUpload({
+                async: {
+                    saveUrl: "@Url.RouteUrl("Default", new { @Controller = "Upload", @Action = "Save" })",
+                    removeUrl: "@Url.RouteUrl("Default", new { @Controller = "Upload", @Action = "Remove" })",
+                    autoUpload: true
+                },
+                localization: {
+                    select: "Upload File"
+                },
+                multiple: false,
+                showFileList: false,
+                upload: onUpload,
+                success: onSuccess
+            });
+            $('#crop_submit').live('click', function() {
+                var x1 = $('#x1').val();
+                var y1 = $('#y1').val();
+                var x2 = $('#x2').val();
+                var y2 = $('#y2').val();
+                var w1 = $('#w').val();
+                var h1 = $('#h').val();
+                var file_name = $('#file_name').val();
+                var img_width = $('#img_width').val();
+                var img_height = $('#img_height').val();
+
+                $.post('/Home/ProcessImageCrop/', { x1: x1, y1: y1, x2: x2, y2: y2, w1: w1, h1: h1, file_name: file_name, img_width: img_width, img_height: img_height }, function(data) {
+                    $('#done').attr('src', '/Home/RenderFromSession/');
+                    $.nmTop().close();
+                });
+            });
+        });
+    </script>
+}

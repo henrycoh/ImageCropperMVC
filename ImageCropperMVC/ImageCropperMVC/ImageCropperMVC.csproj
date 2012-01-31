@@ -64,9 +64,11 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CustomResult\ImageResult.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -116,6 +118,13 @@
     <Content Include="Content\2011.3.1129\Silver\sprite.png" />
     <Content Include="Content\2011.3.1129\textures\glass.png" />
     <Content Include="Content\2011.3.1129\textures\highlight.png" />
+    <Content Include="Content\jCrop\css\Jcrop.gif" />
+    <Content Include="Content\jCrop\css\jquery.Jcrop.css" />
+    <Content Include="Content\nyroModal\img\ajaxLoader.gif" />
+    <Content Include="Content\nyroModal\img\close.gif" />
+    <Content Include="Content\nyroModal\img\next.gif" />
+    <Content Include="Content\nyroModal\img\prev.gif" />
+    <Content Include="Content\nyroModal\styles\nyroModal.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -224,6 +233,10 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\nyroModal\jquery.nyroModal-ie6.js" />
+    <Content Include="Scripts\nyroModal\jquery.nyroModal-ie6.min.js" />
+    <Content Include="Scripts\nyroModal\jquery.nyroModal.custom.js" />
+    <Content Include="Scripts\nyroModal\jquery.nyroModal.custom.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -256,9 +269,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_ImageCrop.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
