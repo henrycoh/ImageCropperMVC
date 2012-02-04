@@ -25,17 +25,20 @@ namespace ImageCropperMVC.Controllers
         }
         public ActionResult Remove(string[] files)
         {
-            // The parameter of the Remove action must be called "fileNames"
-            foreach (var fullName in files)
+            if (files != null)
             {
-                var fileName = Path.GetFileName(fullName);
-                var physicalPath = Path.Combine(Server.MapPath("~/Temp"), fileName);
-
-                // TODO: Verify user permissions
-                if (System.IO.File.Exists(physicalPath))
+                // The parameter of the Remove action must be called "fileNames"
+                foreach (var fullName in files)
                 {
-                    // The files are not actually removed in this demo
-                    System.IO.File.Delete(physicalPath);
+                    var fileName = Path.GetFileName(fullName);
+                    var physicalPath = Path.Combine(Server.MapPath("~/Temp"), fileName);
+
+                    // TODO: Verify user permissions
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        // The files are not actually removed in this demo
+                        System.IO.File.Delete(physicalPath);
+                    }
                 }
             }
             // Return an empty string to signify success
