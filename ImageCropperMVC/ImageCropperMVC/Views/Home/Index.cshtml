@@ -9,8 +9,32 @@
 }
 <h2>@ViewBag.Message</h2>
 <p>
-    <div style="width:60%;">
-        <input name="files" id="files" type="file" />
+    <div>
+        1. Set aspect ratio<br />Current Aspect Ratio: <span id="current_ratio"></span>
+        <select id="ratio_selection" style="margin-left:20px;">
+            <option value="">
+                Select aspect ratio
+            </option>
+            <option value="1.0">
+                1.0
+            </option>
+            <option value="1.2">
+                1.2
+            </option>
+            <option value="2.0">
+                2.0
+            </option>
+            <option value="2.4">
+                2.4
+            </option>
+            <option value="3.0">
+                3.0
+            </option>
+        </select>
+        <button id="change_ratio">Change aspect ratio</button>
+    </div>
+    <div style="width:60%;margin-top:20px;">
+        2. Upload image file to upload (.jpeg, .gif, .jpg, and .png)<input name="files" id="files" type="file" />
     </div>
     <div id="croppedImage"></div>
 </p>
@@ -22,6 +46,11 @@
 	<script type="text/javascript" src="@Url.Content("~/Scripts/nyroModal/jquery.nyroModal-ie6.js")"></script>
     <![endif]-->
     <script type="text/javascript">
+        var ratio = '2.4';  // initial ratio
+        var preview_width;
+        var preview_height;
+        var max_preview_width = 180;
+
         function getFileInfo(e) {
             return $.map(e.files, function(file) {
                 var info = file.name;
@@ -41,6 +70,10 @@
             });
         }
         function onSuccess(e) {
+            var parseRatio = parseFloat(ratio);
+            var init_width = parseRatio * 100;
+            var init_height = 100;
+            
             $.get("/Home/_ImageCrop/?fileName=" + getFileInfo(e), function(content) {
                 $.nmData(content, {
                     closeOnEscape: false,
@@ -51,15 +84,23 @@
                             $('#jcrop_target').Jcrop({
 		                        onChange: showPreview,
 		                        onSelect: showPreview,
-		                        setSelect: [20,20,392,183],
+		                        setSelect: [20,20,init_width + 20,init_height + 20],
                                 addClass: 'jcrop-dark',
-                                aspectRatio: 2.29,
+                                aspectRatio: parseRatio,
                                 allowSelect: false
 	                        });
+
+                            preview_width = max_preview_width;
+                            preview_height = preview_width / parseRatio;
+                            $('#preview_wrapper').css('width', preview_width + 'px');
+                            $('#preview_wrapper').css('height', preview_height + 'px');
+                            $('#preview_wrapper').show();
                         }
                     }
                 });
             });
+
+            $(".k-upload-files").html('');  // hard reset kendoUI upload for now
         }
         function showPreview(coords) {
             $('#x1').val(coords.x);
@@ -69,8 +110,8 @@
 	        $('#w').val(coords.w);
 	        $('#h').val(coords.h);
 
-	        var rx = 186 / coords.w;
-	        var ry = 82 / coords.h;
+	        var rx = preview_width / coords.w;
+	        var ry = preview_height / coords.h;
 
 	        $('#preview').css({
 		        width: Math.round(rx * 500) + 'px',
@@ -80,6 +121,7 @@
 	        });
         }
         $(function() {
+            $('#current_ratio').html(ratio);
             $("#files").kendoUpload({
                 async: {
                     saveUrl: "@Url.RouteUrl("Default", new { @Controller = "Upload", @Action = "Save" })",
@@ -109,6 +151,13 @@
                     $('#croppedImage').html('<img src="/Home/RenderFromSession/" />');
                     $.nmTop().close();
                 });
+            });
+            $('#change_ratio').live('click', function () {
+                var selection = $('#ratio_selection').val();
+                if (selection != '') {
+                    $('#current_ratio').html(selection);
+                    ratio = selection;
+                }
             });
         });
     </script>

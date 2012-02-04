@@ -5,7 +5,7 @@
     <img id="jcrop_target" src="@Url.RouteUrl("Default", new { @Controller = "Home", @Action = "RenderOriginalImage", @width = 500, @height = 300, @fileName = (string)ViewBag.FileName })" />
     <div style="margin-left:5px;position:absolute;top:5px;right:10px;border:solid 1px silver;padding:5px;">
         <div style="margin-bottom:10px;font-weight:bold;">Preview</div>
-        <div style="width:186px;height:82px;overflow:hidden;">
+        <div id="preview_wrapper" style="overflow:hidden;display:none;">
             <img id="preview" src="@Url.RouteUrl("Default", new { @Controller = "Home", @Action = "RenderOriginalImage", @width = 500, @height = 300, @fileName = (string)ViewBag.FileName })" />
         </div>
     </div>
